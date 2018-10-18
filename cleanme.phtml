@@ -17,362 +17,362 @@ $this->queryusers = $qryusers->execute();
 </style>
 
 <section id="section_top" class="panel">
-<div class="page-header position-relative">
-    <h1>
-        Add/Remove Group Members
-        <small>
-            <i class="icon-double-angle-right"></i>
-            <?php   
-            if($this->profile()->id_usertype==3){
-                echo " Add user by <strong style='color: red'>SuperAdmin</strong>";
-            }
-            ?>
-        </small>
-    </h1>
-</div>
+    <div class="page-header position-relative">
+        <h1>
+            Add/Remove Group Members
+            <small>
+                <i class="icon-double-angle-right"></i>
+                <?php   
+                if($this->profile()->id_usertype==3){
+                    echo " Add user by <strong style='color: red'>SuperAdmin</strong>";
+                }
+                ?>
+            </small>
+        </h1>
+    </div>
 
 
-<div class="panel-body">
-    <div class="step-pane active">
-        <div class="col-lg-8 col-lg-offset-2">
+    <div class="panel-body">
+        <div class="step-pane active">
+            <div class="col-lg-8 col-lg-offset-2">
 
-            <form id="defaultForm" method="post" class="form-horizontal" action="">
-            <div class="row">
-                <div class="col-lg-12">
-                    <label class="col-lg-5 " style="">
-                        <h3 class=" smaller lighter ">Name Group</h3>
-                    </label>
-                    <div class="col-lg-7" id="">
-                        <strong>
-                            <h3 class=" smaller lighter green" style="">
-                                <?php
-                                $disabled='';
-                                if($this->data["id_groups"]==1){
-                                    $disabled="disabled";
-                                }
-                                ?>
-
-                                <?php
-                                echo $this->formText("name", htmlentities($this->data["name"]), array("required" => "required",$disabled=>''));
-                                ?>
-                            </h3>
-                        </strong>
-                    </div>
-                </div>
-
-                <div class="col-lg-12"></div>
-
-                <div class="col-lg-12">
-                    <label class="col-lg-5 " style="">
-                        <h3 class="smaller lighter " style=" margin-top: 0px;">Description Group</h3>
-                    </label>
-
-                    <div class="col-lg-7" id="">
-                        <strong>
-                            <h3 class="smaller lighter green" style=" margin-top: 0px;">
-                                <?php
-                                echo $this->formText("description", htmlentities($this->data["description"]), array($disabled=>''));
-                                ?>
-                            </h3>
-                        </strong>
-                    </div>
-                </div>
-
-                <div class="col-lg-12">
-                    <label class="col-lg-7 " style="">
-                        <a href="
-                            <?php
-                            echo $this->baseUrl("groups/show/id/".$this->data["id_groups"]); 
-                            ?>
-                            "
-                            title="Users" role="button" class="" data-toggle="modal" data-target="#modal" onclick="javascript:$('#titleModal').html('Campaigns group');">
-                            View all active campaigns for this group
-                        </a>
-                    </label>
-                </div>
-            </div>
-
-
-
-            <div class="widget-box transparent ui-sortable-handle" id="widget-box-12" style="padding-top: 10px">
-            
-                <div class="widget-body">
-                    <div class="widget-main padding-6 no-padding-left no-padding-right">
-                        <div class="row col-xs-12">
-
-                            <div class="col-xs-12">
-                                <span class="block input-icon input-icon-right">
-                                    <div class="control-group">
-                                        <?php
-                                        if($this->data["id_groups"]!=1) {                                      
-                                            <h4 class="lighter block green">Check/uncheck the users you want add to or remove from this group</h4>
-                                        }
-                                        ?>
-                                    </div>
-
-                                    <div class="alert alert-block alert">
-                                        <?php
-                                        if($this->data["id_groups"]!=1) { echo "success"; }else{ echo "danger"; } 
-                                        ?>
-
-                                        <button class="close" type="button" data-dismiss="alert">
-                                            <i class="ace-icon fa fa-times"></i>
-                                        </button>
-
-                                        <?php
-                                        if($this->data["id_groups"]!=1) {
-                                            echo "Adding a user to a group will add the user to all campaigns associated with the group.";
-                                        }else{
-                                            echo "You cannot add or remove members from this group.";
-                                        }
-                                        ?>
-                                    </div>
-
-                                    <?php 
-                                    if($this->data["id_groups"]!=1) {                                     
-                                        <div class="control-group" style=" float:left;   width: 180px;">
-                                            <a href="#" id="showusersnogroup" onclick="$('.notview').toggle(); if($('.notview').is(':visible')){ $('#nonmembers').html('Hide'); }else{  $('#nonmembers').html('Show'); }">
-                                                <button type="button" class="btn btn-primary" 
-                                                    <?php
-                                                    if ($this->data["id_groups"] == 1) {
-                                                        echo "disabled";
-                                                    }
-                                                    ?>
-                                                    id="" name="" value=""
-                                                    <label id="nonmembers">Show</label>
-                                                    Non-Members
-                                                </button>
-                                            </a>
-
-                                            <div style="height: 10px"></div>
-                                        </div>                                 
-                                    }
-
-                                    if($this->profile()->id_usertype==3){//superadmin
-                                        <div class="form-group">
-                                            <label class="col-lg-3 control-label">Company </label>
-                                            <div class="col-lg-4">
-                                                <?php
-                                                $arrusercom= array();
-                                                foreach (Doctrine_Query::create()
-                                                            ->from("Database_Model_Company")
-                                                            ->where("status='ACTIVE'")
-                                                            ->orderBy("name ASC")
-                                                            ->execute() as $obj) {
-                                                    $arrusercom[$obj->id_company] = htmlentities($obj->name);
-                                                }
-                                                echo $this->formSelect("id_company", $this->profile()->id_company,
-                                                    array("class" => "chzn-select"),
-                                                    $arrusercom
-                                                );
-                                                ?>
-                                            </div>
-                                        </div>                                 
+                <form id="defaultForm" method="post" class="form-horizontal" action="">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="col-lg-5 " style="">
+                            <h3 class=" smaller lighter ">Name Group</h3>
+                        </label>
+                        <div class="col-lg-7" id="">
+                            <strong>
+                                <h3 class=" smaller lighter green" style="">
+                                    <?php
+                                    $disabled='';
+                                    if($this->data["id_groups"]==1){
+                                        $disabled="disabled";
                                     }
                                     ?>
-                                    <div class="control-group">
-                                        <div class="controls"></div>
-                                    </div>
-                                </span>
-                            </div>
-                        </div>
 
-                        <div style="height: 10px"></div>
+                                    <?php
+                                    echo $this->formText("name", htmlentities($this->data["name"]), array("required" => "required",$disabled=>''));
+                                    ?>
+                                </h3>
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12"></div>
+
+                    <div class="col-lg-12">
+                        <label class="col-lg-5 " style="">
+                            <h3 class="smaller lighter " style=" margin-top: 0px;">Description Group</h3>
+                        </label>
+
+                        <div class="col-lg-7" id="">
+                            <strong>
+                                <h3 class="smaller lighter green" style=" margin-top: 0px;">
+                                    <?php
+                                    echo $this->formText("description", htmlentities($this->data["description"]), array($disabled=>''));
+                                    ?>
+                                </h3>
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <label class="col-lg-7 " style="">
+                            <a href="
+                                <?php
+                                echo $this->baseUrl("groups/show/id/".$this->data["id_groups"]); 
+                                ?>
+                                "
+                                title="Users" role="button" class="" data-toggle="modal" data-target="#modal" onclick="javascript:$('#titleModal').html('Campaigns group');">
+                                View all active campaigns for this group
+                            </a>
+                        </label>
                     </div>
                 </div>
 
-                <?php
-                if($this->data["id_groups"]!=1) {
-                    <div class="col-sm-12">
-                        <div class="adv-table">
-                                <table id="dynamic-table" class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
+
+
+                <div class="widget-box transparent ui-sortable-handle" id="widget-box-12" style="padding-top: 10px">
+                
+                    <div class="widget-body">
+                        <div class="widget-main padding-6 no-padding-left no-padding-right">
+                            <div class="row col-xs-12">
+
+                                <div class="col-xs-12">
+                                    <span class="block input-icon input-icon-right">
+                                        <div class="control-group">
                                             <?php
-                                            if($this->profile()->id_usertype==3){ 
-                                                <th>Company</th>
+                                            if($this->data["id_groups"]!=1) {                                      
+                                                <h4 class="lighter block green">Check/uncheck the users you want add to or remove from this group</h4>
                                             }
                                             ?>
-                                            <th>Email</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="contentuserslist">
-                                    <?php
-                                    foreach($this->queryusers as $key => $usuario){
-                                        $queryexisteuseringroup = Doctrine_Query::create()
-                                            ->from("Database_Model_GroupUsers f,f.User s")
-                                            ->where("f.id_groups = ?", $this->data["id_groups"])
-                                            ->andWhere("id_usuario=?",$usuario->id_usuario)
-                                            ->andWhere("s.activo='1'")
-                                            ->andWhere("f.id_groups != 1")
-                                            ->andWhere("s.id_usertype<2")
-                                            ->fetchOne();
+                                        </div>
 
-                                        $user=Doctrine_Query::create()
-                                            ->from('Database_Model_User')
-                                            ->where('activo = 1')
-                                            ->andwhere('id_usertype =1');
-                                            ->andwhere('id_user =' . $usuario->id_usario);
+                                        <div class="alert alert-block alert">
+                                            <?php
+                                            if($this->data["id_groups"]!=1) { echo "success"; }else{ echo "danger"; } 
+                                            ?>
 
-                                        if($queryexisteuseringroup->id_usuario){
-                                            $check="checked";
-                                        }else{
-                                            $check="";
-                                        }
-                                        if($this->data["id_groups"]==1){$check="checked";}
-                                        if($check) {
-                                            echo "<tr class='usuario' id='lineid" . $key . "'>";                                            
-                                            <td class="center">
-                                                <label>
-                                                    <?php
-                                                    echo "<input type='hidden' name='id_usuario[]' value='" . $user->id_usuario . "'>";
-                                                    echo "<input type='hidden' name='email[]' value='" . htmlentities($user->email) . "'>";
-                                                    ?>
-                                                    <input
-                                                        type="checkbox" 
+                                            <button class="close" type="button" data-dismiss="alert">
+                                                <i class="ace-icon fa fa-times"></i>
+                                            </button>
 
+                                            <?php
+                                            if($this->data["id_groups"]!=1) {
+                                                echo "Adding a user to a group will add the user to all campaigns associated with the group.";
+                                            }else{
+                                                echo "You cannot add or remove members from this group.";
+                                            }
+                                            ?>
+                                        </div>
+
+                                        <?php 
+                                        if($this->data["id_groups"]!=1) {                                     
+                                            <div class="control-group" style=" float:left;   width: 180px;">
+                                                <a href="#" id="showusersnogroup" onclick="$('.notview').toggle(); if($('.notview').is(':visible')){ $('#nonmembers').html('Hide'); }else{  $('#nonmembers').html('Show'); }">
+                                                    <button type="button" class="btn btn-primary" 
                                                         <?php
                                                         if ($this->data["id_groups"] == 1) {
                                                             echo "disabled";
                                                         }
-                                                        name="perm[]"
                                                         ?>
-                                                        
-                                                        <?php
-                                                        echo $check 
-                                                        ?>
+                                                        id="" name="" value=""
+                                                        <label id="nonmembers">Show</label>
+                                                        Non-Members
+                                                    </button>
+                                                </a>
 
+                                                <div style="height: 10px"></div>
+                                            </div>                                 
+                                        }
+
+                                        if($this->profile()->id_usertype==3){//superadmin
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label">Company </label>
+                                                <div class="col-lg-4">
+                                                    <?php
+                                                    $arrusercom= array();
+                                                    foreach (Doctrine_Query::create()
+                                                                ->from("Database_Model_Company")
+                                                                ->where("status='ACTIVE'")
+                                                                ->orderBy("name ASC")
+                                                                ->execute() as $obj) {
+                                                        $arrusercom[$obj->id_company] = htmlentities($obj->name);
+                                                    }
+                                                    echo $this->formSelect("id_company", $this->profile()->id_company,
+                                                        array("class" => "chzn-select"),
+                                                        $arrusercom
+                                                    );
+                                                    ?>
+                                                </div>
+                                            </div>                                 
+                                        }
+                                        ?>
+                                        <div class="control-group">
+                                            <div class="controls"></div>
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div style="height: 10px"></div>
+                        </div>
+                    </div>
+
+                    <?php
+                    if($this->data["id_groups"]!=1) {
+                        <div class="col-sm-12">
+                            <div class="adv-table">
+                                    <table id="dynamic-table" class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <?php
+                                                if($this->profile()->id_usertype==3){ 
+                                                    <th>Company</th>
+                                                }
+                                                ?>
+                                                <th>Email</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="contentuserslist">
+                                        <?php
+                                        foreach($this->queryusers as $key => $usuario){
+                                            $queryexisteuseringroup = Doctrine_Query::create()
+                                                ->from("Database_Model_GroupUsers f,f.User s")
+                                                ->where("f.id_groups = ?", $this->data["id_groups"])
+                                                ->andWhere("id_usuario=?",$usuario->id_usuario)
+                                                ->andWhere("s.activo='1'")
+                                                ->andWhere("f.id_groups != 1")
+                                                ->andWhere("s.id_usertype<2")
+                                                ->fetchOne();
+
+                                            $user=Doctrine_Query::create()
+                                                ->from('Database_Model_User')
+                                                ->where('activo = 1')
+                                                ->andwhere('id_usertype =1');
+                                                ->andwhere('id_user =' . $usuario->id_usario);
+
+                                            if($queryexisteuseringroup->id_usuario){
+                                                $check="checked";
+                                            }else{
+                                                $check="";
+                                            }
+                                            if($this->data["id_groups"]==1){$check="checked";}
+                                            if($check) {
+                                                echo "<tr class='usuario' id='lineid" . $key . "'>";                                            
+                                                <td class="center">
+                                                    <label>
+                                                        <?php
+                                                        echo "<input type='hidden' name='id_usuario[]' value='" . $user->id_usuario . "'>";
+                                                        echo "<input type='hidden' name='email[]' value='" . htmlentities($user->email) . "'>";
+                                                        ?>
+                                                        <input
+                                                            type="checkbox" 
+
+                                                            <?php
+                                                            if ($this->data["id_groups"] == 1) {
+                                                                echo "disabled";
+                                                            }
+                                                            name="perm[]"
+                                                            ?>
+                                                            
+                                                            <?php
+                                                            echo $check 
+                                                            ?>
+
+                                                            class="perm-check"
+                                                            value="<?php
+                                                                echo $user->id_usuario; 
+                                                                ?>"
+                                                        />
+                                                        <span class="lbl"></span>
+                                                    </label>
+                                                </td>
+
+                                                <?php
+                                                $admin = "";
+                                                if ($user->id_usertype >= 2) {//superadmin
+                                                    $admin = "<label style='color: blue'>&nbsp;<-Admin</label>";
+                                                }
+                                                echo '<td>', ucfirst(strtolower(htmlentities($user->nombre) . " " . $admin)), '</td>';
+                                                echo '<td>', ucfirst(strtolower(htmlentities($user->lastname))), '</td>';
+                                                if ($user->id_usertype >= 2) {//superadmin
+                                                    echo '<td>', htmlentities($user->Company->name), '</td>';
+                                                }
+                                                echo '<td>', htmlentities($user->email), '</td>';
+                                                ?>                                                                                    
+                                            }
+                                        }
+                                        foreach($this->queryusers as $usuario){
+                                            $queryexisteuseringroup = Doctrine_Query::create()
+                                                ->from("Database_Model_UsuarioGroups f,f.Usuario s")
+                                                ->where("f.id_groups = ?", $this->data["id_groups"])
+                                                ->andWhere("id_usuario=?",$usuario->id_usuario)
+                                                ->andWhere("s.activo='1'")
+                                                ->andWhere("f.id_groups != 1")
+                                                ->andWhere("s.id_usertype<2")
+                                                ->fetchOne();
+
+
+                                            $user=Doctrine_Query::create()
+                                                ->from('Database_Model_User')
+                                                ->where('activo = 1')
+                                                ->andwhere('id_usertype =1');
+                                                ->andwhere('id_user =' . $usuario->id_usario);
+
+                                            if($queryexisteuseringroup->id_usuario){
+                                                $check="checked";
+                                            }else{
+                                                $check="";
+                                            }
+                                            if(!$check){
+                                            $lineId++;
+                                            echo "<tr class='usuario notview' style='display:none' id='lineid".$lineId."'>";                                        
+                                                <td class="center">
+                                                    <label>
+                                                        <?php
+                                                        echo "<input type='hidden' name='id_usuario[]' value='".$user->id_usuario."'>";
+                                                        echo "<input type='hidden' name='email[]' value='".htmlentities($user->email)."'>";
+                                                        ?>
+                                                        <input type="checkbox" 
+                                                        <?php
+                                                        if($this->data["id_groups"]==1){
+                                                            echo "disabled";}
+                                                        ?>
+                                                        name="perm[]"
+                                                        <?php
+                                                        echo $check
+                                                        ?>
                                                         class="perm-check"
                                                         value="<?php
-                                                               echo $user->id_usuario; 
-                                                               ?>"
-                                                    />
-                                                    <span class="lbl"></span>
-                                                </label>
-                                            </td>
+                                                            echo $user->id_usuario; 
+                                                            ?>"/>
+                                                        <span class="lbl"></span>
+                                                    </label>
 
-                                            <?php
-                                            $admin = "";
-                                            if ($user->id_usertype >= 2) {//superadmin
-                                                $admin = "<label style='color: blue'>&nbsp;<-Admin</label>";
-                                            }
-                                            echo '<td>', ucfirst(strtolower(htmlentities($user->nombre) . " " . $admin)), '</td>';
-                                            echo '<td>', ucfirst(strtolower(htmlentities($user->lastname))), '</td>';
-                                            if ($user->id_usertype >= 2) {//superadmin
-                                                echo '<td>', htmlentities($user->Company->name), '</td>';
-                                            }
-                                            echo '<td>', htmlentities($user->email), '</td>';
-                                            ?>                                                                                    
-                                        }
+                                                </td>
+
+                                                <?php
+                                                $admin="";
+                                                if($user->id_usertype>=2){//superadmin
+                                                    $admin="<label style='color: blue'>&nbsp;<-Admin</label>";
+                                                }
+
+                                                echo '<td>',ucfirst(strtolower(htmlentities($user->nombre)." ".$admin)),'</td>';
+                                                echo '<td>',ucfirst(strtolower(htmlentities($user->lastname))),'</td>';
+                                                if($user->id_usertype>=2){//superadmin
+                                                    echo '<td>',htmlentities($user->Company->name),'</td>';
+                                                }
+                                                echo '<td>',htmlentities($user->email),'</td>';
+                                                ?>
+                                            </tr>
+                                        ?>
+                                        </tbody>
+                                    </table>
+                            </div>
+                        </div>
+
+                        <div class="form-group" >
+                            <div class="col-lg-9 col-lg-offset-3" style="padding-top: 10px">
+                                <button type="submit" 
+                                    <?php
+                                    if($this->data["id_groups"]==1){
+                                        echo "disabled";
                                     }
-                                    foreach($this->queryusers as $usuario){
-                                        $queryexisteuseringroup = Doctrine_Query::create()
-                                            ->from("Database_Model_UsuarioGroups f,f.Usuario s")
-                                            ->where("f.id_groups = ?", $this->data["id_groups"])
-                                            ->andWhere("id_usuario=?",$usuario->id_usuario)
-                                            ->andWhere("s.activo='1'")
-                                            ->andWhere("f.id_groups != 1")
-                                            ->andWhere("s.id_usertype<2")
-                                            ->fetchOne();
-
-
-                                        $user=Doctrine_Query::create()
-                                            ->from('Database_Model_User')
-                                            ->where('activo = 1')
-                                            ->andwhere('id_usertype =1');
-                                            ->andwhere('id_user =' . $usuario->id_usario);
-
-                                        if($queryexisteuseringroup->id_usuario){
-                                            $check="checked";
-                                        }else{
-                                            $check="";
-                                        }
-                                        if(!$check){
-                                        $lineId++;
-                                        echo "<tr class='usuario notview' style='display:none' id='lineid".$lineId."'>";                                        
-                                            <td class="center">
-                                                <label>
-                                                    <?php
-                                                    echo "<input type='hidden' name='id_usuario[]' value='".$user->id_usuario."'>";
-                                                    echo "<input type='hidden' name='email[]' value='".htmlentities($user->email)."'>";
-                                                    ?>
-                                                    <input type="checkbox" 
-                                                    <?php
-                                                    if($this->data["id_groups"]==1){
-                                                        echo "disabled";}
-                                                    ?>
-                                                    name="perm[]"
-                                                    <?php
-                                                    echo $check
-                                                    ?>
-                                                    class="perm-check"
-                                                    value="<?php
-                                                           echo $user->id_usuario; 
-                                                           ?>"/>
-                                                    <span class="lbl"></span>
-                                                </label>
-
-                                            </td>
-
-                                            <?php
-                                            $admin="";
-                                            if($user->id_usertype>=2){//superadmin
-                                                $admin="<label style='color: blue'>&nbsp;<-Admin</label>";
-                                            }
-
-                                            echo '<td>',ucfirst(strtolower(htmlentities($user->nombre)." ".$admin)),'</td>';
-                                            echo '<td>',ucfirst(strtolower(htmlentities($user->lastname))),'</td>';
-                                            if($user->id_usertype>=2){//superadmin
-                                                echo '<td>',htmlentities($user->Company->name),'</td>';
-                                            }
-                                            echo '<td>',htmlentities($user->email),'</td>';
-                                            ?>
-                                        </tr>
                                     ?>
-                                    </tbody>
-                                </table>
+                                    class="btn btn-primary" id="button"  name="" value="">
+                                    Save
+                                </button>
+                                <button class="btn btn-danger" onclick="window.history.go(-1); return false;">
+                                    <i class="ace-icon fa fa-times"></i>
+                                    Cancel
+                                </button>
+                            </div>
+
                         </div>
-                    </div>
+                    }
+                    ?>
 
-                    <div class="form-group" >
-                        <div class="col-lg-9 col-lg-offset-3" style="padding-top: 10px">
-                            <button type="submit" 
-                                <?php
-                                if($this->data["id_groups"]==1){
-                                    echo "disabled";
-                                }
-                                ?>
-                                class="btn btn-primary" id="button"  name="" value="">
-                                Save
-                            </button>
-                            <button class="btn btn-danger" onclick="window.history.go(-1); return false;">
-                                <i class="ace-icon fa fa-times"></i>
-                                Cancel
-                            </button>
-                        </div>
-
-                    </div>
-                }
-                ?>
-
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12">
-                    <label class="col-lg-12 " style="">
-                        To add a new user to the system and to this group, or to delete users from the system, go to the 
-                        <a href="<?php
-                                 echo $this->baseUrl("users");
-                                 ?>">users</a> tab.
-                    </label>
                 </div>
-            </div>
 
-            </form>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <label class="col-lg-12 " style="">
+                            To add a new user to the system and to this group, or to delete users from the system, go to the 
+                            <a href="<?php
+                                    echo $this->baseUrl("users");
+                                    ?>">users</a> tab.
+                        </label>
+                    </div>
+                </div>
+
+                </form>
+            </div>
         </div>
     </div>
-</div>
 </section>
